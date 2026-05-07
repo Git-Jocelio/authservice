@@ -1,0 +1,62 @@
+# =========================
+# Delphi - Arquivos compilados
+# =========================
+*.exe
+*.dll
+*.bpl
+*.dcu
+*.map
+*.drc
+*.rsm
+
+# =========================
+# Arquivos temporários / backup
+# =========================
+*.~*
+*.bak
+*.tmp
+
+# =========================
+# Arquivos da IDE Delphi
+# =========================
+*.identcache
+*.local
+*.dproj.local
+*.groupproj.local
+*.stat
+
+# =========================
+# Pastas de build
+# =========================
+Win32/
+Win64/
+Debug/
+Release/
+
+# =========================
+# Pastas do seu projeto (NÃO versionar)
+# =========================
+bin/
+logs/
+temp/
+
+# =========================
+# Histórico automático do Delphi
+# =========================
+__history/
+__recovery/
+
+# =========================
+# Logs internos
+# =========================
+*.log
+
+# =========================
+# EXCEÇÕES (arquivos importantes)
+# =========================
+!*.pas
+!*.dfm
+!*.dpr
+!*.dproj
+!*.json
+!*.md
