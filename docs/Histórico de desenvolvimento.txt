@@ -3,17 +3,51 @@ este arquivo foi criado para manter um histórico de desenvolvimento do AuthServ
 
 -foi feito um estudo para entender os conceitos e regras do protocolo LDAP e funcionamento do AD
 
--iniciado o projeto em 06/05/2026
--criado a estrutura de pastas
--criado uma aplicação console no delphi
--criado o arquivo config.ini, com as informações de porta,ip, etc 
--criado a unit AuthService.Config, responsável para ler as configurações no arquivo config.ini
-- criado a unit unit AuthService.Utils, responsável por gerar um log das ações do app.
+***iniciado o projeto em 06/05/2026
+***criado a estrutura de pastas
+***criado uma aplicação console no delphi
+***criado o arquivo config.ini, com as informações de porta,ip, etc 
+***criado a unit AuthService.Config, responsável para ler as configurações no arquivo config.ini
+***criado a unit AuthService.Utils, responsável por gerar um log das ações do app e salvar na pasta logs.
 
 
 próximos passos...
-**criar um repositório no GitHub
-*subir o código atual para o repositório
-*criar um read-me 
+*** criar um repositório no GitHub --> feito em 07/05/2026
+*** subir o código atual para o repositório --> feito em 07/05/2026
+*** criar um read-me --> feito em 07/05/2026 
 
-pesquisar como pegar outras informações do AD, exemplo usuários cadastrados
+***pesquisar como pegar outras informações do AD, exemplo usuários cadastrados
+resposta: sim é possível, precisa de um usuário técnico cadastrado no AD: ldap_service
+tem que tenha permissão para:
+-pesquisar usuários
+-listar grupos
+-ler atributos
+-verificar se tem restrição de OUs?
+
+Conclusão diante do novo cenário de pesquisas no AD, minha API receberá futuramente novas rotas que permitam consultar e listar a base de dados do AD e listas logs. 
+e terá uma nova aplicação versão (VCL) AuthAdmin que consumirá minha API
+Responsabilidade:
+
+Ferramenta administrativa.
+
+Características:
+✔ interface gráfica
+✔ pesquisa usuários
+✔ consulta LDAP
+✔ logs
+✔ monitoramento
+
+08/05/2026
+próximos passos...
+* achar uma forma de testar a aplicação, pesquisar por ADs fakes para testes.
+ resposta: dá para usar Apache Directory Server com Docker. ps. ver pdf na pasta docs
+
+a unit provider que tentei implementar deu erro em winapi.winldap, de acordo com chatgpt esta unit não vem mais com o novo delphi então vou seguir numa outra linha usar uma dll nativa do delphi : Usar a DLL nativa do Windows:
+wldap32.dll
+
+bom hoje foi implementado todas a camadas do projeto, controles routes, service, e modal. o sitema já responde no brower com dados mokado.
+
+próximos passos...
+-instalar  Apache Directory Server com Docker
+-refatorar a aplicação para testes reais
+
