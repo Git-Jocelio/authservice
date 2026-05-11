@@ -187,7 +187,6 @@
         </DelphiCompile>
         <DCCReference Include="..\config\AuthService.Config.pas"/>
         <DCCReference Include="..\utils\AuthService.Utils.pas"/>
-        <DCCReference Include="..\provider\AuthService.Provider.AD.pas"/>
         <DCCReference Include="..\routes\AuthService.Routes.pas"/>
         <DCCReference Include="..\model\AuthService.Model.Login.pas"/>
         <DCCReference Include="..\provider\AuthService.Provider.Mock.pas"/>

@@ -1,3 +1,19 @@
+
+{
+  Unit responsável pelo sistema de logs do AuthService.
+
+  Esta camada realiza o gerenciamento e gravação de logs
+  da aplicação, registrando eventos importantes como:
+  - inicialização do serviço
+  - autenticações realizadas
+  - falhas de login
+  - erros internos
+
+  Os logs são armazenados em arquivos diários na pasta /logs,
+  utilizando codificação UTF-8 e timestamp para auditoria
+  e rastreabilidade do serviço.
+}
+
 unit AuthService.Utils;
 
 interface

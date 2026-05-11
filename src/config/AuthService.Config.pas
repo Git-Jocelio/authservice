@@ -1,4 +1,14 @@
-unit AuthService.Config;
+{
+  Unit responsável pelo gerenciamento das configurações do AuthService.
+
+  Esta camada realiza a leitura do arquivo config.ini,
+  carregando parâmetros necessários para o funcionamento
+  da aplicação, como host LDAP, porta, BaseDN e timeout.
+
+  Implementa o padrão Singleton para manter uma única
+  instância das configurações durante toda a execução
+  do serviço.
+}unit AuthService.Config;
 
 interface
 
@@ -30,6 +40,7 @@ var
   LIni: TIniFile;
   LPath: string;
 begin
+  // busca configurações no arquivo ini
   LPath := TPath.GetFullPath(TPath.Combine(ExtractFilePath(ParamStr(0)), '..\config\config.ini'));
   if not TFile.Exists(LPath) then
     raise Exception.Create('Arquivo de configuração não encontrado em: ' + LPath);

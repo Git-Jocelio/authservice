@@ -9,7 +9,6 @@ uses
   Horse,
   AuthService.Config in '..\config\AuthService.Config.pas',
   AuthService.Utils in '..\utils\AuthService.Utils.pas',
-  AuthService.Provider.AD in '..\provider\AuthService.Provider.AD.pas',
   AuthService.Routes in '..\routes\AuthService.Routes.pas',
   AuthService.Model.Login in '..\model\AuthService.Model.Login.pas',
   AuthService.Provider.Mock in '..\provider\AuthService.Provider.Mock.pas',
@@ -19,13 +18,16 @@ uses
 begin
   try
     TLogger.Write('Serviço Iniciando...');
-    TConfig.GetInstance; // Tenta carregar
+    TConfig.GetInstance; // busca configurações no arquivo ini e carrega o host armazenado. ex.: 127.0.0.1
     TLogger.Write('Configuração carregada. Host AD: ' + TConfig.GetInstance.Host);
 
+    // configura rotas
     RegisterRoutes;
 
 
     TLogger.Write('Serviço rodando na porta 9000...');
+
+ //   THorse.SetExceptionHandler(HandleException);
 
     THorse.Listen(9000);
 
