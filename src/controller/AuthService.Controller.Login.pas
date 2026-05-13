@@ -22,6 +22,7 @@ interface
 
 uses
   Horse;
+
 //rota Login
 procedure Login(Req: THorseRequest;Res: THorseResponse);
 
@@ -54,9 +55,7 @@ begin
 
     // Captura campos
     LLogin := LJson.GetValue<string>('login');
-
     LPassword := LJson.GetValue<string>('password');
-
     LIP := Req.RawWebRequest.RemoteIP;
 
     // Validação login e Password
@@ -76,7 +75,7 @@ begin
 
 
     // Autenticação
-    if TLoginService.Authenticate(LLogin, LPassword, LIP) then
+    if TLoginService.Authenticate(LLogin, LPassword) then
     begin
       Res.ContentType('application/json');
       Res.Status(200).Send(TJSONObject.Create.AddPair('success', TJSONBool.Create(True)).ToJSON);

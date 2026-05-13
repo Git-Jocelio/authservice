@@ -2,29 +2,22 @@ unit AuthService.Provider.Mock;
 
 interface
 
+uses AuthService.Provider.Interfaces;
+
+
+
 type
-  TMockProvider = class
+  TMockProvider =  class(TInterfacedObject, IAuthProvider)
   public
-    class function Authenticate(
-      const ALogin,
-      APassword: string
-    ): Boolean;
+    function Authenticate(const ALogin,APassword: string): Boolean;
   end;
 
 implementation
 
-//Isso simula LDAP.
-
-class function TMockProvider.Authenticate(
-  const ALogin,
-  APassword: string
-): Boolean;
+// Isso simula autenticação no LDAP.
+function TMockProvider.Authenticate(const ALogin,APassword: string): Boolean;
 begin
-
-  Result :=
-    (ALogin = 'admin') and
-    (APassword = '123');
-
+  Result :=(ALogin = 'admin') and (APassword = '123');
 end;
 
 end.

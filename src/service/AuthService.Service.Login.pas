@@ -12,27 +12,34 @@ unit AuthService.Service.Login;
 
 interface
 
+
 type
   TLoginService = class
   public
-    class function Authenticate(const ALogin, APassword, AIP: string ): Boolean;
+    class function Authenticate(const ALogin, APassword: string ): Boolean;
   end;
 
 implementation
 
 uses
-  AuthService.Provider.Mock,
-  AuthService.Utils;
+  AuthService.Provider.Interfaces,
+  //AuthService.Provider.Mock;
+  AuthService.Provider.LDAP;
 
-class function TLoginService.Authenticate(const ALogin, APassword, AIP: string): Boolean;
+class function TLoginService.Authenticate(const ALogin,APassword: string): Boolean;
+var
+  LProvider: IAuthProvider;
 begin
 
-  Result := TMockProvider.Authenticate(ALogin, APassword);
+  // provider atual
+  //LProvider := TMockProvider.Create;    usa dos mockados
+  LProvider := TLDAPProvider.Create;      // dados reais
 
-  if Result then
-    TLogger.Write('LOGIN OK | ' + ALogin + ' | IP: ' + AIP)
-  else
-    TLogger.Write('LOGIN FAILED | ' + ALogin + ' | IP: ' + AIP);
+  // autenticação
+  Result := LProvider.Authenticate(
+                                   ALogin,
+                                   APassword
+                                   );
 
 end;
 

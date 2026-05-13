@@ -11,9 +11,10 @@ uses
   AuthService.Utils in '..\utils\AuthService.Utils.pas',
   AuthService.Routes in '..\routes\AuthService.Routes.pas',
   AuthService.Model.Login in '..\model\AuthService.Model.Login.pas',
-  AuthService.Provider.Mock in '..\provider\AuthService.Provider.Mock.pas',
   AuthService.Service.Login in '..\service\AuthService.Service.Login.pas',
-  AuthService.Controller.Login in '..\controller\AuthService.Controller.Login.pas';
+  AuthService.Controller.Login in '..\controller\AuthService.Controller.Login.pas',
+  AuthService.Provider.Interfaces in '..\provider\AuthService.Provider.Interfaces.pas',
+  AuthService.Provider.LDAP in '..\provider\AuthService.Provider.LDAP.pas';
 
 begin
   try
@@ -24,17 +25,15 @@ begin
     // configura rotas
     RegisterRoutes;
 
+    TLogger.Write('LDAP Host: ' + TConfig.GetInstance.Host );
+    TLogger.Write('LDAP Port: ' +  IntToStr(TConfig.GetInstance.Port) );
 
-    TLogger.Write('Serviço rodando na porta 9000...');
-
- //   THorse.SetExceptionHandler(HandleException);
-
-    THorse.Listen(9000);
+    THorse.Listen(TConfig.GetInstance.ServerPort);
 
   except
     on E: Exception do
     begin
-      TLogger.Error('Falha Crítica na Inicialização: ' + E.Message);
+      TLogger.Error('Falha na Inicialização: ' + E.Message);
       Writeln('Erro critico: ' + E.Message);
       Readln; // <--- Segura a janela para você ler o erro na tela também
     end;

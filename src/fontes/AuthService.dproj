@@ -170,7 +170,7 @@
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <DCC_UnitSearchPath>D:\AuthService\src\controller;D:\AuthService\src\service;D:\AuthService\src\provider;D:\AuthService\src\config;D:\AuthService\src\utils;D:\AuthService\src\model;D:\AuthService\src\routes;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>D:\AuthService\src\controller;D:\AuthService\src\service;D:\AuthService\src\provider;D:\AuthService\src\config;D:\AuthService\src\utils;D:\AuthService\src\model;D:\AuthService\src\routes;D:\AuthService\libs\synapse-master;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>(None)</Manifest_File>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
@@ -189,9 +189,10 @@
         <DCCReference Include="..\utils\AuthService.Utils.pas"/>
         <DCCReference Include="..\routes\AuthService.Routes.pas"/>
         <DCCReference Include="..\model\AuthService.Model.Login.pas"/>
-        <DCCReference Include="..\provider\AuthService.Provider.Mock.pas"/>
         <DCCReference Include="..\service\AuthService.Service.Login.pas"/>
         <DCCReference Include="..\controller\AuthService.Controller.Login.pas"/>
+        <DCCReference Include="..\provider\AuthService.Provider.Interfaces.pas"/>
+        <DCCReference Include="..\provider\AuthService.Provider.LDAP.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
