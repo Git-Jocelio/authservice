@@ -34,6 +34,7 @@ type
     class procedure AuthFailed(const User, AIP: string; ALDAPCode: integer);
 
     class function GetLDAPMessage(const Acode: integer): string;
+    class function Sanitize(const AValue: string): string;
 
   end;
 
@@ -44,8 +45,8 @@ implementation
 class procedure TLogger.AuthFailed(const User, AIP: string; ALDAPCode: integer);
 begin
   write('AUTH | FAILED | ' +
-        'USER=' + User + ' | ' +
-        'IP=' + AIP + ' | ' +
+        'USER=' + Sanitize(User) + ' | ' +
+        'IP=' + Sanitize(AIP) + ' | ' +
         'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'+
         GetLDAPMessage(ALDAPCode)
         );
@@ -54,8 +55,8 @@ end;
 class procedure TLogger.AuthSuccess(const User, AIP: string; ALDAPCode: integer);
 begin
   write('AUTH | SUCCESS | ' +
-        'USER=' + User + ' | ' +
-        'IP=' + AIP + ' | ' +
+        'USER=' + Sanitize(User) + ' | ' +
+        'IP=' + Sanitize(AIP) + ' | ' +
         'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'  +
         GetLDAPMessage(ALDAPCode)
         );
@@ -98,6 +99,12 @@ end;
 
 class function TLogger.GetLDAPMessage(const Acode: integer): string;
 begin
+  // evita JSON do tipo...
+  //   {
+  //    "login": "admin|ERROR",
+  //    "password": "123"
+  //   }
+  //
   case Acode of
     0:
      result := 'SUCESS';
@@ -130,6 +137,27 @@ begin
      result := 'UNKNOWN_ERROR'
 
   end;
+
+end;
+
+class function TLogger.Sanitize(const AValue: string): string;
+begin
+  Result := AValue;
+
+  // remove quebra de linha
+  Result := StringReplace(Result, sLineBreak, '', [rfReplaceAll]);
+
+  // remove CR
+  Result := StringReplace(Result, #13, '', [rfReplaceAll]);
+
+  // remove LF
+  Result := StringReplace(Result, #10, '', [rfReplaceAll]);
+
+  // remove pipe
+  Result := StringReplace(Result, '|', '', [rfReplaceAll]);
+
+  // remove TAB
+  Result := StringReplace(Result, #9, '', [rfReplaceAll]);
 
 end;
 
