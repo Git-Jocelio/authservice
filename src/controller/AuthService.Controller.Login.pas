@@ -75,7 +75,7 @@ begin
 
 
     // Autenticação
-    if TLoginService.Authenticate(LLogin, LPassword) then
+    if TLoginService.Authenticate(LLogin, LPassword, LIP) then
     begin
       Res.ContentType('application/json');
       Res.Status(200).Send(TJSONObject.Create.AddPair('success', TJSONBool.Create(True)).ToJSON);

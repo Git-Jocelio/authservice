@@ -29,11 +29,37 @@ type
   public
     class procedure Write(const AMessage: string);
     class procedure Error(const AMessage: string);
+
+    class procedure AuthSuccess(const User, AIP: string; ALDAPCode: integer);
+    class procedure AuthFailed(const User, AIP: string; ALDAPCode: integer);
+
+    class function GetLDAPMessage(const Acode: integer): string;
+
   end;
 
 implementation
 
 { TLogger }
+
+class procedure TLogger.AuthFailed(const User, AIP: string; ALDAPCode: integer);
+begin
+  write('AUTH | FAILED | ' +
+        'USER=' + User + ' | ' +
+        'IP=' + AIP + ' | ' +
+        'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'+
+        GetLDAPMessage(ALDAPCode)
+        );
+end;
+
+class procedure TLogger.AuthSuccess(const User, AIP: string; ALDAPCode: integer);
+begin
+  write('AUTH | SUCCESS | ' +
+        'USER=' + User + ' | ' +
+        'IP=' + AIP + ' | ' +
+        'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'  +
+        GetLDAPMessage(ALDAPCode)
+        );
+end;
 
 class procedure TLogger.EnsureLogDirectory;
 begin
@@ -68,6 +94,43 @@ end;
 class procedure TLogger.Error(const AMessage: string);
 begin
   Write('ERROR | ' + AMessage);
+end;
+
+class function TLogger.GetLDAPMessage(const Acode: integer): string;
+begin
+  case Acode of
+    0:
+     result := 'SUCESS';
+
+    3:
+     result := 'TIME LIMIT EXCEEDED';
+
+    49:
+     result := 'INVALID CREDENTIALS';
+
+
+    50:
+     result := 'INSUFFICIENT ACCESS RIGHTS';
+
+    32:
+     result := 'USE_NOT_FOUND';
+
+    533:
+     result := 'ACCOUNT_DISABLED';
+
+    701:
+     result := 'ACCOUNT_EXPIRED';
+
+    773:
+     result := 'PASSWORD_EXPIRED';
+
+    775:
+     result := 'ACCOUNT_LOCKED';
+  else
+     result := 'UNKNOWN_ERROR'
+
+  end;
+
 end;
 
 end.

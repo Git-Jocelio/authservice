@@ -9,31 +9,52 @@ uses
 type
   TLDAPProvider = class(TInterfacedObject, IAuthProvider)
   public
-    function Authenticate(const ALogin, APassword: string): Boolean;
+    function Authenticate(const ALogin, APassword, AIP: string): Boolean;
   end;
 
 implementation
 
 uses
   System.SysUtils,
-  ldapsend, AuthService.Config;
+  ldapsend,
+  AuthService.Config,
+  AuthService.Utils;
 
-function TLDAPProvider.Authenticate(const ALogin, APassword: string): Boolean;
+function TLDAPProvider.Authenticate(const ALogin, APassword, AIP: string): Boolean;
 var
   LDAP: TLDAPSend;
+  LUserPrincipalName : string;
 begin
   result := False;
 
   LDAP := TLDAPSend.Create;
-
   try
 
+    //configura servidor e porta LDAP
     LDAP.TargetHost := TConfig.GetInstance.Host;
+    LDAP.TargetPort := IntToStr(TConfig.GetInstance.Port);
 
-   LDAP.TargetPort := IntToStr(TConfig.GetInstance.Port);
+    //monta usuário e dominio --> ex.: compbyte\vgomes
+    LUserPrincipalName := 'compbyte\' + ALogin;
 
-    // teste conexão
-    Result := LDAP.Login;
+    //credenciais
+    LDAP.UserName := LUserPrincipalName;
+    LDAP.Password := APassword;
+
+    //registro no log
+    TLogger.Write('Tentando autenticar: ' + LUserPrincipalName);
+
+    if LDAP.Login then
+    begin
+
+      result := LDAP.Bind;
+
+      if result then
+        TLogger.AuthSuccess(ALogin, AIP , LDAP.ResultCode)
+      else
+        TLogger.AuthFailed(ALogin, AIP, LDAP.ResultCode);
+
+     end;
 
   finally
     LDAP.Free;
