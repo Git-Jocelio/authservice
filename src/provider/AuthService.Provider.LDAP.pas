@@ -34,6 +34,9 @@ begin
     LDAP.TargetHost := TConfig.GetInstance.Host;
     LDAP.TargetPort := IntToStr(TConfig.GetInstance.Port);
 
+    //timeout conexão LDAP( se AD travar API pode fica presa esperando
+    LDAP.Timeout := TConfig.GetInstance.Timeout * 1000;
+
     //monta usuário e dominio --> ex.: compbyte\vgomes
     LUserPrincipalName := 'compbyte\' + ALogin;
 
@@ -54,6 +57,10 @@ begin
       else
         TLogger.AuthFailed(ALogin, AIP, LDAP.ResultCode);
 
+     end
+     else
+     begin
+       TLogger.Error('LDAP connection failed: ' + 'TIMEOUT OR UNREACHABLE SERVER');
      end;
 
   finally

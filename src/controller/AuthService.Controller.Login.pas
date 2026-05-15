@@ -21,7 +21,8 @@ unit AuthService.Controller.Login;
 interface
 
 uses
-  Horse;
+  Horse, AuthService.Utils;
+
 
 //rota Login
 procedure Login(Req: THorseRequest;Res: THorseResponse);
@@ -90,9 +91,20 @@ begin
   except
     on E: Exception do
     begin
+      // mostra o erro somente no log interno
+      TLogger.Error(E.Message);
+
+
+      // devolve uma messagem genérica ao usuário
       Res.ContentType('application/json');
-      Res.Status(500).Send(TJSONObject.Create.AddPair('success',TJSONBool.Create(False))
-                                             .AddPair('message', E.Message).ToJSON);
+
+      Res.Status(500).Send(
+         TJSONObject.Create
+         .AddPair('success', TJSONBool.Create(false))
+         .addPair('message', 'internal sever erro')
+         );
+
+
     end;
   end;
 end;
