@@ -99,12 +99,6 @@ end;
 
 class function TLogger.GetLDAPMessage(const Acode: integer): string;
 begin
-  // evita JSON do tipo...
-  //   {
-  //    "login": "admin|ERROR",
-  //    "password": "123"
-  //   }
-  //
   case Acode of
     0:
      result := 'SUCESS';
@@ -142,6 +136,15 @@ end;
 
 class function TLogger.Sanitize(const AValue: string): string;
 begin
+
+  // evita JSON do tipo...
+  //   {
+  //    "login": "admin|ERROR",
+  //    "password": "123"
+  //   }
+  //   evitando erros ao gerar o log
+
+
   Result := AValue;
 
   // remove quebra de linha
