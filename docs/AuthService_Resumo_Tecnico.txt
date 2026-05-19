@@ -1,0 +1,193 @@
+
+AUTHSERVICE - RESUMO TÉCNICO DO PROJETO
+=======================================
+
+OBJETIVO DO PROJETO
+-------------------
+Desenvolver um serviço de autenticação corporativa em Delphi para integração
+com Active Directory via LDAP, utilizando arquitetura em camadas,
+boas práticas de segurança e logs de auditoria.
+
+------------------------------------------------------------
+TECNOLOGIAS UTILIZADAS
+------------------------------------------------------------
+
+BACKEND
+- Delphi 12
+- Horse Framework (API REST)
+- Synapse (LDAP)
+- Active Directory (Windows Server 2022)
+- Git / GitHub
+
+PROTOCOLOS E INFRAESTRUTURA
+- LDAP (usada para ler informaçãoe sno AD)
+- HTTP REST
+- TCP/IP
+- RDP ( acessar remotamente outro computador)
+- NAT ( redireciona um ip pra outro ex 10.10.1.245 para 192.168.100.30 )
+- Active Directory Domain Services (AD DS)
+
+AMBIENTE
+- Proxmox (permite cirar máquinas virtuais LAB)
+- Windows Server 2022
+- Windows 10 LAB
+- Rede privada LAB 192.168.100.0/24
+
+------------------------------------------------------------
+ARQUITETURA IMPLEMENTADA
+------------------------------------------------------------
+
+PADRÃO EM CAMADAS
+- Controller ( recebe a requisição e devolve uma resposta)
+- Service (faz a comunicação entre controller e provider )
+- Provider ( configura parâmetros do LDAP antes da consulta )
+- Utils/Logger (utils implementa a classe TLogger que gera logs e padronização de erros)
+- Config(configura parâmetros da aplicação)
+
+FLUXO DA APLICAÇÃO
+HTTP Request
+    ↓
+Controller
+    ↓
+Service
+    ↓
+Provider LDAP
+    ↓
+Active Directory
+
+PADRÕES E TÉCNICAS
+- Separation of Concerns
+- Injeção por Interface
+- Singleton (Config)
+- Logging Centralizado
+- Configuração externa via INI
+- Arquitetura desacoplada
+- Provider Pattern
+
+------------------------------------------------------------
+FUNCIONALIDADES IMPLEMENTADAS
+------------------------------------------------------------
+
+API REST
+- Endpoint POST /login
+
+AUTENTICAÇÃO LDAP REAL
+- Bind LDAP real no Active Directory
+- Validação de usuário e senha reais
+- Integração com domínio compbyte.lab
+
+CONFIGURAÇÃO EXTERNA
+Arquivo config.ini contendo:
+- Porta servidor
+- Host LDAP
+- Porta LDAP
+- BaseDN
+- Domain
+- Timeout
+- SSL
+
+LOGS
+- Logs diários UTF-8
+- Auditoria autenticação
+- Registro sucesso/falha
+- Registro IP origem
+- Registro LDAP_CODE
+- Registro descrição erro LDAP
+
+EXEMPOS DE LOG
+AUTH | SUCCESS | USER=gluz | IP=127.0.0.1 | LDAP_CODE=0|SUCCESS
+
+AUTH | FAILED | USER=gluz | IP=127.0.0.1 | LDAP_CODE=49|INVALID_CREDENTIALS
+
+------------------------------------------------------------
+MELHORIAS DE SEGURANÇA IMPLEMENTADAS
+------------------------------------------------------------
+
+1. OCULTAÇÃO DE ERROS INTERNOS
+- E.Message não é mais retornado ao cliente
+- Erros reais permanecem apenas nos logs
+
+2. TIMEOUT LDAP
+- Controle de timeout conexão LDAP
+- Evita travamento da API
+
+3. SANITIZAÇÃO DE LOGS
+- Remoção de CRLF
+- Remoção de TAB
+- Remoção de pipe "|"
+- Proteção contra log injection
+
+4. NÃO EXPOSIÇÃO DE SENHAS
+- Senhas nunca registradas em log
+
+5. RESPOSTAS GENÉRICAS
+- Usuário inválido e senha inválida retornam mesma resposta
+
+------------------------------------------------------------
+CÓDIGOS LDAP TRATADOS
+------------------------------------------------------------
+
+0   = SUCCESS
+49  = INVALID_CREDENTIALS
+32  = USER_NOT_FOUND
+533 = ACCOUNT_DISABLED
+701 = ACCOUNT_EXPIRED
+773 = PASSWORD_EXPIRED
+775 = ACCOUNT_LOCKED
+
+------------------------------------------------------------
+ESTRUTURA PROVÁVEL PRODUÇÃO
+------------------------------------------------------------
+
+C:\AuthService
+│
+├── bin
+│   └── AuthService.exe
+│
+├── config
+│   └── config.ini
+│
+├── logs
+│
+└── temp
+
+SERVIÇO WINDOWS
+- AuthService será executado como serviço Windows
+- Inicialização automática sistema operacional
+
+------------------------------------------------------------
+PRÓXIMOS PASSOS SUGERIDOS
+------------------------------------------------------------
+
+- JWT Authentication
+- Middleware autorização
+- HTTPS
+- Rate Limit
+- Refresh Token
+- Integração Gateway
+- Health Check
+- Observabilidade
+- Monitoramento
+- SIEM/Splunk
+
+------------------------------------------------------------
+CONCEITOS ESTUDADOS NO PROJETO
+------------------------------------------------------------
+
+- Active Directory
+- LDAP
+- Bind LDAP
+- Domain Controller
+- Proxmox
+- VM
+- NAT
+- RDP
+- API REST
+- JWT
+- Segurança APIs
+- Arquitetura corporativa
+- Auditoria
+- Logs
+- Timeout
+- Segurança defensiva
+- Defense in Depth

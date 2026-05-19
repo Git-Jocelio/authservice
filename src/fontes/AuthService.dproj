@@ -193,6 +193,7 @@
         <DCCReference Include="..\controller\AuthService.Controller.Login.pas"/>
         <DCCReference Include="..\provider\AuthService.Provider.Interfaces.pas"/>
         <DCCReference Include="..\provider\AuthService.Provider.LDAP.pas"/>
+        <DCCReference Include="..\service\AuthService.Service.JWT.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

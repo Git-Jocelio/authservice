@@ -14,7 +14,8 @@ uses
   AuthService.Service.Login in '..\service\AuthService.Service.Login.pas',
   AuthService.Controller.Login in '..\controller\AuthService.Controller.Login.pas',
   AuthService.Provider.Interfaces in '..\provider\AuthService.Provider.Interfaces.pas',
-  AuthService.Provider.LDAP in '..\provider\AuthService.Provider.LDAP.pas';
+  AuthService.Provider.LDAP in '..\provider\AuthService.Provider.LDAP.pas',
+  AuthService.Service.JWT in '..\service\AuthService.Service.JWT.pas';
 
 begin
   try

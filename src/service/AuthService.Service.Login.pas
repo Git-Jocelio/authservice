@@ -31,16 +31,10 @@ var
   LProvider: IAuthProvider;
 begin
 
-  // provider atual
-  //LProvider := TMockProvider.Create;    usa dos mockados
-  LProvider := TLDAPProvider.Create;      // dados reais
+  LProvider := TLDAPProvider.Create;
 
   // autenticação
-  Result := LProvider.Authenticate(
-                                   ALogin,
-                                   APassword,
-                                   AID
-                                   );
+  Result := LProvider.Authenticate( ALogin, APassword, AID );
 
 end;
 

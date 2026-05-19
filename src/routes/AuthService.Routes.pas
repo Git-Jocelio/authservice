@@ -27,14 +27,20 @@ uses
 procedure RegisterRoutes;
 begin
 
-  THorse.Get('/ping',
+  THorse.Get('/teste',
     procedure(Req: THorseRequest; Res: THorseResponse)
     begin
-      Res.Send('pong');
+      Res.Send('Servidor Rodando...');
     end);
 
   THorse.Post('/login', Login);
 
 end;
+
+procedure TesteRota(Req: THorseRequest; Res: THorseResponse);
+begin
+  Res.Send('Servidor Rodando...');
+end;
+
 
 end.

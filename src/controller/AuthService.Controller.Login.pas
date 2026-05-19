@@ -21,7 +21,7 @@ unit AuthService.Controller.Login;
 interface
 
 uses
-  Horse, AuthService.Utils;
+  Horse, AuthService.Utils, AuthService.Service.JWT;
 
 
 //rota Login
@@ -40,12 +40,13 @@ var
   LLogin: string;
   LPassword: string;
   LIP: string;
+  LToken : string;
 begin
   try
-    // Parse JSON manual
+    // carrega o JSON na variável
     LJson := TJSONObject.ParseJSONValue( Req.Body ) as TJSONObject;
 
-    // JSON inválido
+    // validar JSON
     if not Assigned(LJson) then
     begin
       Res.ContentType('application/json');
@@ -78,8 +79,16 @@ begin
     // Autenticação
     if TLoginService.Authenticate(LLogin, LPassword, LIP) then
     begin
+      // gerar token com id do usuário...
+      LToken := Criar_Token(LLogin);
+
       Res.ContentType('application/json');
-      Res.Status(200).Send(TJSONObject.Create.AddPair('success', TJSONBool.Create(True)).ToJSON);
+      Res.Status(200).Send(TJSONObject.Create.AddPair('success', TJSONBool.Create(True))
+                                             .AddPair('user', LLogin)
+                                             .AddPair('token',LToken)
+                                             .ToJSON);
+
+
     end
     else
     begin

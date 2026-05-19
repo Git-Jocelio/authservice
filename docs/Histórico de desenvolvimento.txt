@@ -45,9 +45,16 @@ próximos passos...
 a unit provider que tentei implementar deu erro em winapi.winldap, de acordo com chatgpt esta unit não vem mais com o novo delphi então vou seguir numa outra linha usar uma dll nativa do delphi : Usar a DLL nativa do Windows:
 wldap32.dll
 
-bom hoje foi implementado todas a camadas do projeto, controles routes, service, e modal. o sitema já responde no brower com dados mokado.
+bom hoje foi implementado todas a camadas do projeto, controles routes, service, e modal. o sistema já responde no browser com dados mokado.
 
 próximos passos...
 -instalar  Apache Directory Server com Docker
 -refatorar a aplicação para testes reais
 
+18/05/2026
+foi criado um ambiente promox para testes, usei uma biblioteca sysnapse para ler dados do AD.
+também foi feito as validações necessárias. o sistema hoje já valida o usuário via postman. 
+
+-próximo passo ver aulas do helber para geração do token JWT.
+-Implementar a geração do token no sistema.
+-Criar segunda aplicação para pesquisas no AD  
