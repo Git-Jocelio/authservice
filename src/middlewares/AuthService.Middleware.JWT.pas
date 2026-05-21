@@ -19,6 +19,7 @@ uses
   JOSE.Consumer,        // aqui
   JOSE.Consumer.Validators,   // aqui
   JOSE.Types.JSON;
+  //JOSE.Core.JWK;
 
 procedure JWTMiddleware(Req: THorseRequest; Res: THorseResponse; Next: TProc );
 var
@@ -53,8 +54,8 @@ begin
 
   try
     // validar token
-    TJOSEConsumerBuilder.NewConsumer.SetVerificationKey(SECRET)
-                                    .SetExpectedIssuer(true,'AuthService')
+    TJOSEConsumerBuilder.NewConsumer.SetVerificationKey( BytesOf (SECRET) )
+                                    .SetExpectedIssuer(false,'AuthService')
                                     .Build
                                     .Process(LToken);
 
@@ -62,7 +63,7 @@ begin
     on e: exception do
     begin
       Res.Status(401).Send( TJSONOBject.Create.AddPair('success', TJSONBool(False) )
-                                              .AddPair('message','invalid or expired token')
+                                              .AddPair('message', 'invalid or expired token')
                                               .ToJSON
                                               );
       exit;

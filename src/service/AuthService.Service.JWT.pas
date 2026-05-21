@@ -16,7 +16,7 @@ uses
   System.DateUtils;
 
 const
-  SECRET = 'Assel@2026';
+  SECRET = 'Assel.AuthServiceJWT.SecretKey2026';
 
 type
 
