@@ -10,12 +10,8 @@ uses
   AuthService.Config in '..\config\AuthService.Config.pas',
   AuthService.Utils in '..\utils\AuthService.Utils.pas',
   AuthService.Routes in '..\routes\AuthService.Routes.pas',
-  AuthService.Model.Login in '..\model\AuthService.Model.Login.pas',
-  AuthService.Service.Login in '..\service\AuthService.Service.Login.pas',
-  AuthService.Controller.Login in '..\controller\AuthService.Controller.Login.pas',
-  AuthService.Provider.Interfaces in '..\provider\AuthService.Provider.Interfaces.pas',
-  AuthService.Provider.LDAP in '..\provider\AuthService.Provider.LDAP.pas',
-  AuthService.Service.JWT in '..\service\AuthService.Service.JWT.pas';
+  AuthService.Middleware.JWT in '..\middlewares\AuthService.Middleware.JWT.pas';
+
 
 begin
   try

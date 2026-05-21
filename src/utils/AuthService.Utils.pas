@@ -54,7 +54,7 @@ end;
 
 class procedure TLogger.AuthSuccess(const User, AIP: string; ALDAPCode: integer);
 begin
-  write('AUTH | SUCCESS | ' +
+  write('AUTH | SUCESS | ' +
         'USER=' + Sanitize(User) + ' | ' +
         'IP=' + Sanitize(AIP) + ' | ' +
         'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'  +

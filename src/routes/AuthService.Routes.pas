@@ -16,31 +16,39 @@ unit AuthService.Routes;
 
 interface
 
-procedure RegisterRoutes;
+  procedure RegisterRoutes;
 
 implementation
 
 uses
   Horse,
-  AuthService.Controller.Login;
 
-procedure RegisterRoutes;
-begin
-
-  THorse.Get('/teste',
-    procedure(Req: THorseRequest; Res: THorseResponse)
-    begin
-      Res.Send('Servidor Rodando...');
-    end);
-
-  THorse.Post('/login', Login);
-
-end;
+  AuthService.Controller.Login,
+  AuthService.Controller.Logs,
+  AuthService.Middleware.JWT;
 
 procedure TesteRota(Req: THorseRequest; Res: THorseResponse);
 begin
   Res.Send('Servidor Rodando...');
 end;
+
+procedure RegisterRoutes;
+begin
+
+  THorse.Get('/teste',
+    TesteRota
+    );
+
+  // login
+  THorse.Post('/login', Login);
+
+  // logs protegidos por JWT
+  THorse.Use(JWTMiddleware)
+        .Get('/logs',GetLogs);
+
+end;
+
+
 
 
 end.
