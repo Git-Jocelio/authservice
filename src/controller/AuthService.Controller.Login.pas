@@ -85,6 +85,7 @@ begin
       Res.ContentType('application/json');
       Res.Status(200).Send(TJSONObject.Create.AddPair('success', TJSONBool.Create(True))
                                              .AddPair('user', LLogin)
+                                             .AddPair('timestamp', formatDateTime('yyyy-mm-dd"T"hh:nn:ss', now))
                                              .AddPair('token',LToken)
                                              .ToJSON);
 
@@ -94,7 +95,8 @@ begin
     begin
       Res.ContentType('application/json');
       Res.Status(401).Send(TJSONObject.Create.AddPair( 'success',TJSONBool.Create(False))
-                                             .AddPair( 'message', 'authentication failed').ToJSON );
+                                             .AddPair( 'message', 'authentication failed')
+                                             .AddPair( 'timestamp', formatDateTime('yyyy-mm-dd"T"hh:nn:ss', now)).ToJSON );
     end;
 
   except

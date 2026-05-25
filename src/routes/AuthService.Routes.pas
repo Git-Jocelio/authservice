@@ -35,15 +35,13 @@ end;
 procedure RegisterRoutes;
 begin
 
-  THorse.Get('/teste',
-    TesteRota
-    );
+  THorse.Get('/teste', TesteRota );
 
   // login
   THorse.Post('/login', Login);
 
-  // logs protegidos por JWT
-  THorse.Use(JWTMiddleware)
+  // Rota de logs protegidos por JWT
+  THorse.Use(JWTMiddleware)   // horese use servive.middleware.JWT e chame a rota GetLogs
         .Get('/logs',GetLogs);
 
 end;

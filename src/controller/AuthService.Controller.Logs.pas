@@ -17,17 +17,29 @@ uses
 
 procedure GetLogs(Req: THorseRequest; Res: THorseResponse);
 var
-  LFileName: string;
 
+  LDate: string;
+
+  LFileName: string;
   LLines: TStringList;
+
   LArray: TJSonArray;
+
+  LParts: TArray<string>;
 
   I: integer;
 begin
+
+  LDate := Req.Query['date'];
+
+  if Trim( LDate) = '' then
+    LDate := FormatDateTime('yyyy-mm-dd', Now);
+
   // arquivo log dia atual
   LFileName := TPath.Combine(ExtractFilePath(ParamStr(0)),
-               '..\logs\Log_' + FormatDateTime('yyyy-mm-dd', Now) + '.log');
+               '..\logs\Log_' + LDate  + '.log');
 
+  // arquivo não existe...
   if not TFile.Exists(LFileName) then
   begin
 
@@ -54,13 +66,28 @@ begin
     for i := 0 to LLines.Count -1 do
     begin
 
+      LParts:= LLines[I].Split(['|']);
+
+      if length(LParts) < 7 then
+        continue;
+
       LArray.Add(
 
         TJSONObject.Create
-          .AddPair('line',LLines[I])
+          .AddPair('date', Trim(LParts[0]))
 
-       );
+          .AddPair('type', Trim(LParts[1]))
 
+          .AddPair('status', Trim(LParts[2]))
+
+          .AddPair('user', StringReplace(LParts[3], 'USER=', '', []))
+
+          .AddPair('ip', StringReplace(LParts[4], 'IP=', '', []))
+
+          .AddPair('ldap_code', StringReplace(LParts[5], 'LDAP_CODE=', '', []))
+
+          .AddPair('ldap_message', StringReplace(LParts[6], 'LDAP_MESSAGE=', '', []))
+                 );
     end;
 
 

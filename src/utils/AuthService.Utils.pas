@@ -44,21 +44,25 @@ implementation
 
 class procedure TLogger.AuthFailed(const User, AIP: string; ALDAPCode: integer);
 begin
-  write('AUTH | FAILED | ' +
-        'USER=' + Sanitize(User) + ' | ' +
-        'IP=' + Sanitize(AIP) + ' | ' +
-        'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'+
-        GetLDAPMessage(ALDAPCode)
+  write(
+        'AUTH|'+
+        'FAILED| ' +
+        'USER=' + Sanitize(User) + '|' +
+        'IP=' + Sanitize(AIP) + '|' +
+        'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'  +
+        'LDAP_MESSAGE=' +  GetLDAPMessage(ALDAPCode)
         );
 end;
 
 class procedure TLogger.AuthSuccess(const User, AIP: string; ALDAPCode: integer);
 begin
-  write('AUTH | SUCESS | ' +
-        'USER=' + Sanitize(User) + ' | ' +
-        'IP=' + Sanitize(AIP) + ' | ' +
+  write(
+        'AUTH|'+
+        'SUCCESS| ' +
+        'USER=' + Sanitize(User) + '|' +
+        'IP=' + Sanitize(AIP) + '|' +
         'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'  +
-        GetLDAPMessage(ALDAPCode)
+        'LDAP_MESSAGE=' +  GetLDAPMessage(ALDAPCode)
         );
 end;
 
@@ -101,7 +105,7 @@ class function TLogger.GetLDAPMessage(const Acode: integer): string;
 begin
   case Acode of
     0:
-     result := 'SUCESS';
+     result := 'SUCCESS';
 
     3:
      result := 'TIME LIMIT EXCEEDED';
@@ -114,7 +118,7 @@ begin
      result := 'INSUFFICIENT ACCESS RIGHTS';
 
     32:
-     result := 'USE_NOT_FOUND';
+     result := 'USER_NOT_FOUND';
 
     533:
      result := 'ACCOUNT_DISABLED';
