@@ -35,7 +35,7 @@ begin
   if Trim( LDate) = '' then
     LDate := FormatDateTime('yyyy-mm-dd', Now);
 
-  // arquivo log dia atual
+  // arquivo log do dia atual
   LFileName := TPath.Combine(ExtractFilePath(ParamStr(0)),
                '..\logs\Log_' + LDate  + '.log');
 
@@ -80,13 +80,13 @@ begin
 
           .AddPair('status', Trim(LParts[2]))
 
-          .AddPair('user', StringReplace(LParts[3], 'USER=', '', []))
+          .AddPair('username', StringReplace(LParts[3], 'USER=', '', [rfIgnoreCase]))
 
-          .AddPair('ip', StringReplace(LParts[4], 'IP=', '', []))
+          .AddPair('ip', StringReplace(LParts[4], 'IP=', '', [rfIgnoreCase]))
 
-          .AddPair('ldap_code', StringReplace(LParts[5], 'LDAP_CODE=', '', []))
+          .AddPair('ldap_code', StringReplace(LParts[5], 'LDAP_CODE=', '', [rfIgnoreCase]))
 
-          .AddPair('ldap_message', StringReplace(LParts[6], 'LDAP_MESSAGE=', '', []))
+          .AddPair('ldap_message', StringReplace(LParts[6], 'LDAP_MESSAGE=', '', [rfIgnoreCase]))
                  );
     end;
 

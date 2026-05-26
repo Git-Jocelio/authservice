@@ -62,15 +62,19 @@ begin
   except
     on e: exception do
     begin
-      Res.Status(401).Send( TJSONOBject.Create.AddPair('success', TJSONBool(False) )
-                                              .AddPair('message', 'invalid or expired token')
-                                              .ToJSON
-                                              );
-      exit;
+      Res.Status(THTTPStatus.Unauthorized);
+
+      Res.Send(TJSONObject.Create
+           .AddPair('success',TJSONBool.Create(False))
+           .AddPair('message',E.Message).ToJSON);
+
+      Exit;
 
     end;
   end;
 
+  //Res.Status(THTTPStatus.OK);
+  Res.Status(200);
   Next;
 end;
 

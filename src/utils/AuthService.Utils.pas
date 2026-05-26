@@ -46,7 +46,7 @@ class procedure TLogger.AuthFailed(const User, AIP: string; ALDAPCode: integer);
 begin
   write(
         'AUTH|'+
-        'FAILED| ' +
+        'FAILED|' +
         'USER=' + Sanitize(User) + '|' +
         'IP=' + Sanitize(AIP) + '|' +
         'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'  +
@@ -58,7 +58,7 @@ class procedure TLogger.AuthSuccess(const User, AIP: string; ALDAPCode: integer)
 begin
   write(
         'AUTH|'+
-        'SUCCESS| ' +
+        'SUCCESS|' +
         'USER=' + Sanitize(User) + '|' +
         'IP=' + Sanitize(AIP) + '|' +
         'LDAP_CODE=' + IntToStr(ALDAPCode) + '|'  +
@@ -87,7 +87,7 @@ begin
     LFileName := TPath.Combine(FLogPath, 'Log_' + FormatDateTime('yyyy-mm-dd', Now) + '.log');
 
     // Formato da linha conforme requisito: 2026-04-30 10:00:00 | MENSAGEM
-    LContent := FormatDateTime('yyyy-mm-dd hh:nn:ss', Now) + ' | ' + AMessage + sLineBreak;
+    LContent := FormatDateTime('yyyy-mm-dd hh:nn:ss', Now) + '|' + AMessage + sLineBreak;
 
     // TFile.AppendAllText abre, escreve e fecha o arquivo(LFileName) de forma segura
     TFile.AppendAllText(LFileName, LContent, TEncoding.UTF8);
@@ -98,7 +98,7 @@ end;
 
 class procedure TLogger.Error(const AMessage: string);
 begin
-  Write('ERROR | ' + AMessage);
+  Write('ERROR |' + AMessage);
 end;
 
 class function TLogger.GetLDAPMessage(const Acode: integer): string;
