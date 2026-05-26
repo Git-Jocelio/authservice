@@ -23,7 +23,6 @@ implementation
 
 uses
   AuthService.Provider.Interfaces,
-  //AuthService.Provider.Mock;
   AuthService.Provider.LDAP;
 
 class function TLoginService.Authenticate(const ALogin, APassword, AID: string): Boolean;

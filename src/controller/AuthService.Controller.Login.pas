@@ -36,7 +36,7 @@ uses
 
 procedure Login(Req: THorseRequest;Res: THorseResponse);
 var
-  LJson: TJSONObject;
+  LJSON: TJSONObject;
   LLogin: string;
   LPassword: string;
   LIP: string;
@@ -44,7 +44,7 @@ var
 begin
   try
     // carrega o JSON na variável
-    LJson := TJSONObject.ParseJSONValue( Req.Body ) as TJSONObject;
+    LJSON := TJSONObject.ParseJSONValue( Req.Body ) as TJSONObject;
 
     // validar JSON
     if not Assigned(LJson) then

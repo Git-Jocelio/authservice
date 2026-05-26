@@ -4,12 +4,14 @@ unit AuthService.Provider.LDAP;
 interface
 
 uses
-  AuthService.Provider.Interfaces;
+  AuthService.Provider.Interfaces,
+  AuthService.Model.User;
 
 type
   TLDAPProvider = class(TInterfacedObject, IAuthProvider)
   public
     function Authenticate(const ALogin, APassword, AIP: string): Boolean;
+    function GetUsers: TArray<TADUser>;
   end;
 
 implementation
@@ -18,7 +20,8 @@ uses
   System.SysUtils,
   ldapsend,
   AuthService.Config,
-  AuthService.Utils;
+  AuthService.Utils,
+  System.Classes;
 
 function TLDAPProvider.Authenticate(const ALogin, APassword, AIP: string): Boolean;
 var
@@ -64,6 +67,72 @@ begin
      end;
 
   finally
+    LDAP.Free;
+  end;
+
+end;
+
+
+function TLDAPProvider.GetUsers: TArray<TADUser>;
+var
+  LDAP : TLDAPSend;
+  LUser: TADUser;
+  I:integer;
+  LUserPrincipalName : string;
+  LAttributes: TStringList;
+
+begin
+  setLength(Result,0);
+  LDAP := TLDAPSend.Create;
+  LAttributes := TStringList.Create;
+
+  try
+    //configura servidor e porta LDAP
+    LDAP.TargetHost := TConfig.GetInstance.Host;
+    LDAP.TargetPort := IntToStr(TConfig.GetInstance.Port);
+    LDAP.Timeout := TConfig.GetInstance.Timeout * 1000;
+
+    LAttributes.add('cn');
+    LAttributes.add('sAMAccountName');
+    LAttributes.add('mail');
+
+
+    //credenciais
+   // LUserPrincipalName := 'compbyte\' + ALogin;
+   // LDAP.UserName := LUserPrincipalName;
+   // LDAP.Password := APassword;
+
+    if LDAP.Login then
+    begin
+      if LDAP.Bind then
+      begin
+      //filtro LDAP
+       if LDAP.Search(
+                  TConfig.GetInstance.BaseDN,
+                  False,
+                 '(&(objectClass=user)(objectCategory=person))',
+                  LAttributes
+                  ) then
+          begin
+            for I := 0 to LDAP.SearchResult.Count -1 do
+            begin
+
+             SetLength(Result, Length(Result) +1);
+
+             LUser.Name := LDAP.SearchResult.Items[I].Attributes.Get('cn');
+
+             LUser.Login := LDAP.SearchResult.Items[I].Attributes.Get('sAMAccountName');
+
+             LUser.Email := LDAP.SearchResult.Items[I].Attributes.Get('mail');
+
+             Result[High(Result)] := LUser;
+
+            end;
+          end;
+      end;
+    end;
+  finally
+    LAttributes.free;
     LDAP.Free;
   end;
 

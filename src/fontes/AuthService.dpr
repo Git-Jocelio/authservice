@@ -7,21 +7,19 @@ program AuthService;
 uses
   System.SysUtils,
   Horse,
-
+  AuthService.Provider.LDAP in '..\provider\AuthService.Provider.LDAP.pas',
+  AuthService.Provider.Interfaces in '..\provider\AuthService.Provider.Interfaces.pas',
   AuthService.Config in '..\config\AuthService.Config.pas',
   AuthService.Utils in '..\utils\AuthService.Utils.pas',
   AuthService.Middleware.JWT in '..\middlewares\AuthService.Middleware.JWT.pas',
-
   AuthService.Controller.Login in '..\controller\AuthService.Controller.Login.pas',
   AuthService.Controller.Logs in '..\controller\AuthService.Controller.Logs.pas',
-
   AuthService.Routes in '..\routes\AuthService.Routes.pas',
-
-  AuthService.Model.Login in '..\model\AuthService.Model.Login.pas',
-
   AuthService.Service.JWT in '..\service\AuthService.Service.JWT.pas',
-  AuthService.Service.Login in '..\service\AuthService.Service.Login.pas';
-
+  AuthService.Service.Login in '..\service\AuthService.Service.Login.pas',
+  AuthService.Model.User in '..\model\AuthService.Model.User.pas',
+  AuthService.Service.Users in '..\service\AuthService.Service.Users.pas',
+  AuthService.Controller.Users in '..\controller\AuthService.Controller.Users.pas';
 
 begin
 

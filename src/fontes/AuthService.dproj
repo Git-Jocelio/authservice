@@ -185,15 +185,19 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\provider\AuthService.Provider.LDAP.pas"/>
+        <DCCReference Include="..\provider\AuthService.Provider.Interfaces.pas"/>
         <DCCReference Include="..\config\AuthService.Config.pas"/>
         <DCCReference Include="..\utils\AuthService.Utils.pas"/>
         <DCCReference Include="..\middlewares\AuthService.Middleware.JWT.pas"/>
         <DCCReference Include="..\controller\AuthService.Controller.Login.pas"/>
         <DCCReference Include="..\controller\AuthService.Controller.Logs.pas"/>
         <DCCReference Include="..\routes\AuthService.Routes.pas"/>
-        <DCCReference Include="..\model\AuthService.Model.Login.pas"/>
         <DCCReference Include="..\service\AuthService.Service.JWT.pas"/>
         <DCCReference Include="..\service\AuthService.Service.Login.pas"/>
+        <DCCReference Include="..\model\AuthService.Model.User.pas"/>
+        <DCCReference Include="..\service\AuthService.Service.Users.pas"/>
+        <DCCReference Include="..\controller\AuthService.Controller.Users.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
