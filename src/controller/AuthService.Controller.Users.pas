@@ -1,3 +1,5 @@
+unit AuthService.Controller.Users;
+
 {
   Controller responsável pelo endpoint de consulta
   de usuários do Active Directory (/users).
@@ -15,17 +17,13 @@
   HTTP Request -> Controller -> Service -> Provider LDAP
 }
 
-unit AuthService.Controller.Users;
 
 interface
 
 uses
   Horse;
 
-procedure GetUsers(
-  Req: THorseRequest;
-  Res: THorseResponse
-);
+procedure GetUsers(Req: THorseRequest; Res: THorseResponse);
 
 implementation
 
@@ -37,26 +35,25 @@ uses
   AuthService.Service.Users,
   AuthService.Utils;
 
-procedure GetUsers(
-  Req: THorseRequest;
-  Res: THorseResponse
-);
+procedure GetUsers(Req: THorseRequest; Res: THorseResponse);
 var
   LUsers: TArray<TADUser>;
-
   LArray: TJSONArray;
-
   LObject: TJSONObject;
-
   LUser: TADUser;
 
-
+  LLogin: string;
+  LPassword: string;
+  LIP: string;
 begin
   try
 
-    // busca usuários AD
-    LUsers := TUserService.GetUsers;
+    LLogin := Req.Headers['x-login'];
+    LPassword := Req.Headers['x-password'];
+    LIP := Req.RawWebRequest.RemoteIP;
 
+    // busca usuários AD
+    LUsers := TUserService.GetUsers(LLogin, LPassword, LIP);;
 
     LArray := TJSONArray.Create;
 
@@ -87,19 +84,11 @@ begin
       Res.ContentType('application/json');
 
       Res.Status(500).Send(
-
         TJSONObject.Create
-          .AddPair(
-            'success',
-            TJSONBool.Create(False)
-          )
-          .AddPair(
-            'message',
-            'internal server error'
-          )
+          .AddPair('success', TJSONBool.Create(False))
+          .AddPair('message', 'internal server error')
           .ToJSON
-
-      );
+                          );
 
     end;
   end;

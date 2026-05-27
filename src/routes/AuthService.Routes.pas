@@ -1,3 +1,5 @@
+unit AuthService.Routes;
+
 {
   Unit responsável pelo registro das rotas (endpoints) da API AuthService.
 
@@ -6,13 +8,15 @@
   controllers.
 
   Endpoints atuais:
-  - GET  /ping   -> teste de disponibilidade da API
-  - POST /login -> autenticação de usuários
+  - GET  /teste  -> teste disponibilidade API
+  - POST /login  -> autenticação LDAP
+  - GET  /logs   -> consulta logs protegidos JWT
+  - GET  /users  -> consulta usuários AD protegida JWT
 
   Fluxo:
   Cliente HTTP -> Routes -> Controller
 }
-unit AuthService.Routes;
+
 
 interface
 
@@ -25,6 +29,8 @@ uses
 
   AuthService.Controller.Login,
   AuthService.Controller.Logs,
+  AuthService.Controller.Users,
+
   AuthService.Middleware.JWT;
 
 procedure TesteRota(Req: THorseRequest; Res: THorseResponse);
@@ -40,9 +46,41 @@ begin
   // login
   THorse.Post('/login', Login);
 
-  // Rota de logs protegidos por JWT
-  THorse.Use(JWTMiddleware)   // horese use servive.middleware.JWT e chame a rota GetLogs
-        .Get('/logs',GetLogs);
+
+  // AD protegidos JWT
+(*  THORSE
+        .Group
+        .AddCallback(JWTMiddleware)
+        .Get('/logs', GetLogs)
+        .Get('/users', GetUsers);
+*)
+
+    THorse.Get('/logs',
+    procedure(Req: THorseRequest; Res: THorseResponse; Next: TNextProc)
+    begin
+      JWTMiddleware(Req, Res, Next);
+
+      if Res.Status = 401 then
+        Exit;
+
+      GetLogs(Req, Res);
+    end
+    );
+
+
+
+    // users protegidos
+    THorse.Get('/users',
+    procedure(Req: THorseRequest; Res: THorseResponse; Next: TNextProc)
+    begin
+      JWTMiddleware(Req, Res, Next);
+
+      if Res.Status = 401 then
+        Exit;
+
+      GetUsers(Req, Res);
+    end
+    );
 
 end;
 

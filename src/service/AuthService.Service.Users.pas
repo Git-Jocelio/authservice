@@ -1,3 +1,5 @@
+unit AuthService.Service.Users;
+
 {
   Unit responsável pela regra de negócio de consulta
   de usuários no Active Directory.
@@ -9,7 +11,6 @@
   Fluxo:
   Controller -> Service -> Provider LDAP
 }
-unit AuthService.Service.Users;
 
 interface
 
@@ -20,7 +21,7 @@ uses
     TUserService = class
     public
 
-     class function GetUsers:TArray<TADUser>;
+     class function GetUsers(const ALogin, APassword, AIP: string):TArray<TADUser>;
 
   end;
 
@@ -31,14 +32,14 @@ uses
   AuthService.Provider.LDAP;
 
 
-class function TUserService.GetUsers:TArray<TADUser>;
+class function TUserService.GetUsers(const ALogin, APassword, AIP: string):TArray<TADUser>;
 var
   LProvider : IAuthProvider;
 begin
 
   LProvider := TLDAPProvider.create;
 
-  Result := LProvider.GetUsers;
+  Result := LProvider.GetUsers(ALogin, APassword, AIP);
 
 
 end;

@@ -5,7 +5,7 @@ interface
 uses
   Horse;
 
- procedure JWTMiddleware(Req: THorseRequest; Res: THorseResponse; Next: TProc );
+ procedure JWTMiddleware(Req: THorseRequest; Res: THorseResponse; Next: TNextProc );
 
 
 implementation
@@ -21,7 +21,7 @@ uses
   JOSE.Types.JSON;
   //JOSE.Core.JWK;
 
-procedure JWTMiddleware(Req: THorseRequest; Res: THorseResponse; Next: TProc );
+procedure JWTMiddleware(Req: THorseRequest; Res: THorseResponse; Next: TNextProc );
 var
   LAuthHeader: string;
   LToken: string;
@@ -74,7 +74,7 @@ begin
   end;
 
   //Res.Status(THTTPStatus.OK);
-  Res.Status(200);
+  //Res.Status(200);
   Next;
 end;
 
