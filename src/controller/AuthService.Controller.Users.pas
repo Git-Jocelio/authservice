@@ -33,7 +33,7 @@ uses
 
   AuthService.Model.User,
   AuthService.Service.Users,
-  AuthService.Utils;
+  AuthService.Utils, System.NetEncoding;
 
 procedure GetUsers(Req: THorseRequest; Res: THorseResponse);
 var
@@ -49,8 +49,14 @@ begin
   try
 
     LLogin := Req.Headers['x-login'];
-    LPassword := Req.Headers['x-password'];
+    // resolve o problema de quebra de caracteres especias na senha
+    LPassword := TNetEncoding.URL.Decode(Req.Headers['x-password']);
+
     LIP := Req.RawWebRequest.RemoteIP;
+
+
+    //debug para listar o que realmente é capturado pelas variaveis
+    //TLogger.Write('LOGIN=' + LLogin + ' PASSWORD=' + LPassword);
 
     // busca usuários AD
     LUsers := TUserService.GetUsers(LLogin, LPassword, LIP);;

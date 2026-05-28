@@ -18,7 +18,7 @@ uses
   JOSE.Core.JWT,
   JOSE.Consumer,        // aqui
   JOSE.Consumer.Validators,   // aqui
-  JOSE.Types.JSON;
+  JOSE.Types.JSON, AuthService.Utils;
   //JOSE.Core.JWK;
 
 procedure JWTMiddleware(Req: THorseRequest; Res: THorseResponse; Next: TNextProc );
@@ -29,6 +29,16 @@ var
 begin
   // pega header authozization. recebe algo assim : Authorization: Bearer eyJ0eXAiOiJKV1Qi...
   LAuthHeader := Req.Headers['Authorization'];
+
+  LAuthHeader := StringReplace(LAuthHeader,'%20',' ',[rfReplaceAll]);
+
+
+  {debug
+TLogger.Write(
+  'AUTH HEADER=' + LAuthHeader
+);
+}
+
 
   if trim(LAuthHeader) = '' then
   begin
@@ -57,7 +67,10 @@ begin
     TJOSEConsumerBuilder.NewConsumer.SetVerificationKey( BytesOf (SECRET) )
                                     .SetExpectedIssuer(false,'AuthService')
                                     .Build
-                                    .Process(LToken);
+                                    .Process(BytesOf(LToken));
+
+
+
 
   except
     on e: exception do
